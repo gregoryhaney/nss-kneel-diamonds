@@ -1,9 +1,7 @@
 /*
-
     This module contains all of the data, or state, for the
     application. It exports two functions that allow other
     modules to get copies of the state.
-
 */
 const database = {
     styles: [
@@ -32,11 +30,41 @@ const database = {
             sizeId: 2,
             styleId: 3,
             timestamp: 1614659931693
+        },
+        {
+            id: 2,
+            metalId: 4,
+            sizeId: 5,
+            styleId: 1,
+            timestamp: 161465666666
         }
     ]
 }
 
+
+// create and export a FN that will generate a 
+// copy of the "metals" data for use by other modules
 export const getMetals = () => {
     return database.metals.map(metal => ({...metal}))
 }
 
+
+// create and export a FN that will generate a 
+// copy of the "sizes" data for use by other modules
+export const getSizes = () => {
+    return database.sizes.map(size => ({...size}))
+}
+
+
+// create and export a FN that will generate a 
+// copy of the "styles" data for use by other modules
+export const getStyles = () => {
+    return database.styles.map(style => ({...style}))
+}
+
+
+// create and export a FN that will generate a 
+// copy of the "customOrders" data for use by other modules
+export const getOrders = () => {
+    return database.customOrders.map(order => ({...order}))
+}
