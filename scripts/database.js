@@ -24,21 +24,16 @@ const database = {
         { id: 5, metal: "Palladium", price: 1241.0 }
     ],
     customOrders: [
-        {
-            id: 1,
-            metalId: 3,
-            sizeId: 2,
-            styleId: 3,
-            timestamp: 1614659931693
-        },
-        {
-            id: 2,
-            metalId: 4,
-            sizeId: 5,
-            styleId: 1,
-            timestamp: 161465666666
+        { id: 1, 
+          metalId: 3, 
+          sizeId: 2, 
+          styleId: 3, 
+          timestamp: 1614659931693 
         }
-    ]
+        ],
+            // why is this state change being stored as an
+            // object, and not an array or string?
+    orderBuilder: {}
 }
 
 
@@ -67,4 +62,49 @@ export const getStyles = () => {
 // copy of the "customOrders" data for use by other modules
 export const getOrders = () => {
     return database.customOrders.map(order => ({...order}))
+}
+
+/////////////////////////////////////////////////////////
+///// S T A T E   S E T T I N G  F U N C T I O N S //////
+////////////////////////////////////////////////////////
+// create and export a FN to set state for metal
+export const setMetal = (id) => {
+    database.orderBuilder.metalId = id
+}
+
+// create and export a FN to set state for size
+export const setSize = (id) => {
+    database.orderBuilder.sizeId = id
+}
+
+//create and export a FN to set state for style
+export const setStyle = (id) => {
+    database.orderBuilder.styleId = id
+}
+
+
+///////////////////////////////////////////
+//////// P E R M   S T A T E  /////////////
+///// C H A N G E  F U N C T I O N  ///////
+///////////////////////////////////////////
+
+export const addCustomOrder = () => {
+    // copy the current state of user choices
+        const newOrder = {...database.orderBuilder}
+
+        // add new PK to object
+        const lastIndex = database.customOrders.length - 1
+        newOrder.id = database.customOrders[lastIndex].id + 1
+
+        // add timestamp to order
+        newOrder.timestamp = Date.now()
+
+        // add new order obj to custom orders state
+        database.customOrders.push(newOrder)
+
+        // reset temp state for user choices
+        database.orderBuilder = {}
+
+        // broadcast notification that perm state has changed (for all modules)
+        document.dispatchEvent(new CustomEvent("stateChanged"))
 }
